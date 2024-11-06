@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any
 
-from .exceptions import MissingDependencies, MissingDependency
+from .exceptions import MissingDependencies, MissingService
 
 
 class Helper:
@@ -50,7 +50,7 @@ class ServiceProvider:
     def resolve[T](self, interface: type[T]) -> T:
         service_registration = self._services.get(interface)
         if not service_registration:
-            raise MissingDependency(interface)
+            raise MissingService(interface)
 
         if service_registration.instance:
             return service_registration.instance
