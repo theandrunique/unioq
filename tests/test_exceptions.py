@@ -51,3 +51,20 @@ def test_already_registred_exception():
     service_provider_builder.register_transient(IApiService, ApiService)
     with pytest.raises(ServiceAlreadyRegistred):
         service_provider_builder.register_transient(IApiService, ApiService)
+
+
+def test_type_error_with_factory():
+    service_provider_builder = ServiceProviderBuilder()
+
+    def some_factory() -> IHttpClient:
+        return HttpClient()
+
+    with pytest.raises(TypeError):
+        service_provider_builder.register_transient(IApiService, some_factory)
+
+
+def test_type_error_with_service():
+    service_provider_builder = ServiceProviderBuilder()
+
+    with pytest.raises(TypeError):
+        service_provider_builder.register_transient(IApiService, HttpClient)

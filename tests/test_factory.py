@@ -13,7 +13,7 @@ class ApiService(IApiService):
         return "response from api"
 
 
-def test_transient():
+def test_factory():
     service_provider_builder = ServiceProviderBuilder()
 
     def some_factory() -> ApiService:
