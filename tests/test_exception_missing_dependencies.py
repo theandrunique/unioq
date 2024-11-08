@@ -34,4 +34,4 @@ def test_exception_missing_dependencies():
     service_provider_builder.register(IApiService, ApiService, ServiceScope.singleton)
 
     with pytest.raises(MissingDependencies):
-        service_provider = service_provider_builder.build()
+        service_provider_builder.build()

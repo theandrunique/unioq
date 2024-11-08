@@ -5,8 +5,10 @@ class UnioqException(Exception):
 class MissingDependencies(UnioqException):
     "it is impossible to instantiate a class of type D, missing dependencies"
 
-    def __init__(self, missing: list) -> None:
-        super().__init__(f"it is impossible to instantiate a class of type D, missing dependencies: {missing}")
+    def __init__(self, service_name: str, missing: list) -> None:
+        super().__init__(
+            f"It is impossible to instantiate a class of type {service_name}, missing dependencies: {missing}"
+        )
 
 
 class MissingService(UnioqException):
