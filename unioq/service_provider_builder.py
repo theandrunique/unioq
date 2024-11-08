@@ -1,3 +1,4 @@
+import inspect
 from collections.abc import Callable
 from typing import Any, Type, TypeVar
 
@@ -20,6 +21,12 @@ class ServiceProviderBuilder:
         return self.add_service(interface, service, ServiceScope.singleton)
 
     def add_service(self, interface: Type[T], service: Callable[..., T], scope: ServiceScope) -> None:
+        if interface is None or not inspect.isclass(interface):
+            raise TypeError(f"Expected 'interface' to be a class type, but got {type(interface).__name__}")
+
+        if not callable(service):
+            raise TypeError(f"Expected 'service' to be a callable, but got {type(service).__name__}")
+
         check_service_return_type(interface, service)
 
         if registred_service := self._service_registrations.get(interface):
