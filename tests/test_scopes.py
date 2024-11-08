@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from unioq import ServiceProviderBuilder, ServiceScope
+from unioq import ServiceProviderBuilder
 
 
 class IApiService(ABC):
@@ -16,7 +16,7 @@ class ApiService(IApiService):
 def test_singlton():
     service_provider_builder = ServiceProviderBuilder()
 
-    service_provider_builder.register(IApiService, ApiService, ServiceScope.singleton)
+    service_provider_builder.register_singleton(IApiService, ApiService)
 
     service_provider = service_provider_builder.build()
 
@@ -29,7 +29,7 @@ def test_singlton():
 def test_transient():
     service_provider_builder = ServiceProviderBuilder()
 
-    service_provider_builder.register(IApiService, ApiService, ServiceScope.transient)
+    service_provider_builder.register_transient(IApiService, ApiService)
 
     service_provider = service_provider_builder.build()
 

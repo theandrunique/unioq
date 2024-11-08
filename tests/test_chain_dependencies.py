@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 
-from unioq import ServiceProviderBuilder
-from unioq.main import ServiceScope
+from unioq import ServiceProviderBuilder, ServiceScope
 
 
 class ITransport(ABC):

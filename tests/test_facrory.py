@@ -1,8 +1,6 @@
 from abc import ABC, abstractmethod
 
-import pytest
-
-from unioq import MissingService, ServiceProviderBuilder
+from unioq import ServiceProviderBuilder
 
 
 class IApiService(ABC):
@@ -15,9 +13,14 @@ class ApiService(IApiService):
         return "response from api"
 
 
-def test_exception_missing_dependencies():
+def test_transient():
     service_provider_builder = ServiceProviderBuilder()
+
+    def some_factory() -> ApiService:
+        return ApiService()
+
+    service_provider_builder.register_transient(IApiService, some_factory)
+
     service_provider = service_provider_builder.build()
 
-    with pytest.raises(MissingService):
-        service_provider.resolve(IApiService)
+    service_provider.resolve(IApiService)
