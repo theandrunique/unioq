@@ -1,5 +1,5 @@
 import inspect
-from typing import Any, Callable, List, Type, TypeVar, get_origin
+from typing import Any, Callable, List, Type, TypeVar, get_origin, get_type_hints
 
 T = TypeVar("T")
 
@@ -9,6 +9,12 @@ def get_type_name(t: Type[Any]) -> str:
 
 
 def get_dependencies_types(service: Callable[..., Any]) -> List[type]:
+    if inspect.isclass(service):
+        type_hints = get_type_hints(service.__init__)
+    else:
+        type_hints = get_type_hints(service)
+
+    print(type_hints)
     constructor = inspect.signature(service)
     dependencies = []
 
@@ -17,6 +23,8 @@ def get_dependencies_types(service: Callable[..., Any]) -> List[type]:
             continue
 
         dependency_cls = param.annotation
+
+        dependency_cls = type_hints.get(name, param.annotation)
 
         if dependency_cls is inspect._empty or dependency_cls is Any:
             raise ValueError(f"Parameter '{name}' in '{service}' is missing a specific type annotation.")
