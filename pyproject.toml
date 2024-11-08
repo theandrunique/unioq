@@ -1,17 +1,18 @@
 [tool.poetry]
-name = "uniq-ioq"
+name = "unioq"
 version = "0.1.0"
 description = ""
 authors = ["theandrunique <theandrunique@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.8"
 
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.7.2"
 pytest = "^8.3.3"
+mypy = "^1.13.0"
 
 [build-system]
 requires = ["poetry-core"]
