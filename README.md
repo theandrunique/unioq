@@ -1,6 +1,6 @@
 # uniq-ioq
 
-## Interface
+## Example
 
 ```python
 from unioq import ServiceProviderBuilder, ServiceProvider, ServiceScope
@@ -18,16 +18,16 @@ class MyApiService(IApiService):
         return 10
 
 
-def build_ioq_container() -> ServiceProvider:
+def build_service_provider() -> ServiceProvider:
     service_provider_builder = ServiceProviderBuilder()
 
-    service_provider_builder.register(IApiService, MyApiService, ServiceScope.TRANSIENT)
+    service_provider_builder.add_transient(IApiService, MyApiService)
 
     service_provider = service_provider_builder.build()
 
 
 
-service_provider = build_ioq_container()
+service_provider = build_service_provider()
 
 
 api_service = service_provider.resolve(IApiService)
