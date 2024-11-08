@@ -15,7 +15,7 @@ class ServiceProvider:
         if not service_registration:
             raise MissingService(interface)
 
-        if service_registration.lifetime == ServiceScope.singleton:
+        if service_registration.scope == ServiceScope.singleton:
             if not service_registration.instance:
                 service_registration.instance = service_registration.service(
                     *self._resolve_dependencies(service_registration)
@@ -26,10 +26,4 @@ class ServiceProvider:
         return service_registration.service(*self._resolve_dependencies(service_registration))  # type: ignore
 
     def _resolve_dependencies(self, service_registration: ServiceRegistration[T]) -> List[Any]:
-        dependency_instances = []
-
-        for dependency_type in service_registration.args:
-            dependency_instance = self.resolve(dependency_type)
-            dependency_instances.append(dependency_instance)
-
-        return dependency_instances
+        return [self.resolve(dependency_type) for dependency_type in service_registration.args]

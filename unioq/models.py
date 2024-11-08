@@ -16,6 +16,6 @@ class ServiceScope(Enum):
 class ServiceRegistration(Generic[T]):
     name: str
     service: Callable[..., T]
-    lifetime: ServiceScope
+    scope: ServiceScope
     args: List[Any]
     instance: Optional[T] = None

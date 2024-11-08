@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Any
 
 import pytest
 
@@ -68,3 +69,23 @@ def test_type_error_with_service():
 
     with pytest.raises(TypeError):
         service_provider_builder.add_transient(IApiService, HttpClient)
+
+
+def test_missing_annotations_error():
+    service_provider_builder = ServiceProviderBuilder()
+
+    def factory(some_arg) -> IHttpClient:
+        return HttpClient()
+
+    with pytest.raises(ValueError):
+        service_provider_builder.add_transient(IHttpClient, factory)
+
+
+def test_any_annotations_error():
+    service_provider_builder = ServiceProviderBuilder()
+
+    def factory(some_arg: Any) -> IHttpClient:
+        return HttpClient()
+
+    with pytest.raises(ValueError):
+        service_provider_builder.add_transient(IHttpClient, factory)

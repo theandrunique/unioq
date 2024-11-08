@@ -8,9 +8,8 @@ def get_type_name(t: Type[Any]) -> str:
     return t.__name__
 
 
-def get_dependencies_types(service: Callable[..., Any]) -> List[Any]:
+def get_dependencies_types(service: Callable[..., Any]) -> List[type]:
     constructor = inspect.signature(service)
-
     dependencies = []
 
     for name, param in constructor.parameters.items():
@@ -18,6 +17,9 @@ def get_dependencies_types(service: Callable[..., Any]) -> List[Any]:
             continue
 
         dependency_cls = param.annotation
+
+        if dependency_cls is inspect._empty or dependency_cls is Any:
+            raise ValueError(f"Parameter '{name}' in '{service}' is missing a specific type annotation.")
 
         dependencies.append(dependency_cls)
 
