@@ -16,7 +16,7 @@ class ApiService(IApiService):
 def test_singlton():
     service_provider_builder = ServiceProviderBuilder()
 
-    service_provider_builder.register_singleton(IApiService, ApiService)
+    service_provider_builder.add_singleton(IApiService, ApiService)
 
     service_provider = service_provider_builder.build()
 
@@ -29,7 +29,7 @@ def test_singlton():
 def test_transient():
     service_provider_builder = ServiceProviderBuilder()
 
-    service_provider_builder.register_transient(IApiService, ApiService)
+    service_provider_builder.add_transient(IApiService, ApiService)
 
     service_provider = service_provider_builder.build()
 

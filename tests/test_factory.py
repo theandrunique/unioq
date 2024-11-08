@@ -19,7 +19,7 @@ def test_factory():
     def some_factory() -> ApiService:
         return ApiService()
 
-    service_provider_builder.register_transient(IApiService, some_factory)
+    service_provider_builder.add_transient(IApiService, some_factory)
 
     service_provider = service_provider_builder.build()
 

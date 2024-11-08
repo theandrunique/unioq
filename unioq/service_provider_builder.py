@@ -13,13 +13,13 @@ class ServiceProviderBuilder:
     def __init__(self) -> None:
         self._service_registrations: dict[Type[Any], ServiceRegistration[Any]] = {}
 
-    def register_transient(self, interface: Type[T], service: Callable[..., T]) -> None:
-        return self.register(interface, service, ServiceScope.transient)
+    def add_transient(self, interface: Type[T], service: Callable[..., T]) -> None:
+        return self.add_service(interface, service, ServiceScope.transient)
 
-    def register_singleton(self, interface: Type[T], service: Callable[..., T]) -> None:
-        return self.register(interface, service, ServiceScope.singleton)
+    def add_singleton(self, interface: Type[T], service: Callable[..., T]) -> None:
+        return self.add_service(interface, service, ServiceScope.singleton)
 
-    def register(self, interface: Type[T], service: Callable[..., T], scope: ServiceScope) -> None:
+    def add_service(self, interface: Type[T], service: Callable[..., T], scope: ServiceScope) -> None:
         check_service_return_type(interface, service)
 
         if registred_service := self._service_registrations.get(interface):
