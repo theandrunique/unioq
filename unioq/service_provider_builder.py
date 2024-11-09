@@ -27,6 +27,9 @@ class ServiceProviderBuilder:
         if not callable(service):
             raise TypeError(f"Expected 'service' to be a callable, but got {type(service).__name__}")
 
+        if not isinstance(scope, ServiceScope):
+            raise TypeError(f"Expected 'scope' to be ServiceScope, but got {type(scope).__name__}")
+
         check_service_return_type(interface, service)
 
         if registred_service := self._service_registrations.get(interface):
@@ -42,6 +45,10 @@ class ServiceProviderBuilder:
 
     def build(self) -> ServiceProvider:
         missing_dependencies = []
+        service_provider = ServiceProvider(self._service_registrations)
+        self._service_registrations[ServiceProvider] = ServiceRegistration(
+            ServiceProvider.__name__, ServiceProvider, ServiceScope.singleton, [], instance=service_provider
+        )
 
         for service in self._service_registrations.values():
             for service_dependencies in service.args:
@@ -51,4 +58,4 @@ class ServiceProviderBuilder:
             if missing_dependencies:
                 raise MissingDependencies(service.name, missing_dependencies)
 
-        return ServiceProvider(self._service_registrations)
+        return service_provider

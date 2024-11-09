@@ -22,8 +22,6 @@ def get_dependencies_types(service: Callable[..., Any]) -> List[type]:
         if name == "self":
             continue
 
-        dependency_cls = param.annotation
-
         dependency_cls = type_hints.get(name, param.annotation)
 
         if dependency_cls is inspect._empty or dependency_cls is Any:
@@ -54,3 +52,5 @@ def check_service_return_type(interface: Type[T], service: Callable[..., T]) -> 
                 f"The factory function '{service.__name__}' return type '{return_annotation}' "
                 f"does not match the expected interface '{interface.__name__}'."
             )
+    else:
+        raise ValueError("Expecting a function or a class in a service field.")
