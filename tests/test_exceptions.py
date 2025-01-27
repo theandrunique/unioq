@@ -27,7 +27,8 @@ class ApiService(IApiService):
         self.client = client
 
     def do_its_thing(self) -> str:
-        return "response from api"
+        response = self.client.get()
+        return f"response from api: {response}"
 
 
 def test_missing_dependencies_exception():

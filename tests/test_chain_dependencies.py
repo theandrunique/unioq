@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from unioq import ServiceProviderBuilder, ServiceScope
+from unioq import ServiceProviderBuilder
 
 
 class ITransport(ABC):
@@ -45,9 +45,9 @@ class ApiService(IApiService):
 def test_chain_dependencies():
     service_provider_builder = ServiceProviderBuilder()
 
-    service_provider_builder.add_service(ITransport, SocketTransport, ServiceScope.singleton)
-    service_provider_builder.add_service(IHttpClient, HttpClient, ServiceScope.singleton)
-    service_provider_builder.add_service(IApiService, ApiService, ServiceScope.singleton)
+    service_provider_builder.add_singleton(ITransport, SocketTransport)
+    service_provider_builder.add_singleton(IHttpClient, HttpClient)
+    service_provider_builder.add_singleton(IApiService, ApiService)
 
     service_provider = service_provider_builder.build()
 

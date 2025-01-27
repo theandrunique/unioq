@@ -1,14 +1,9 @@
-from abc import ABC, abstractmethod
+from unittest.mock import Mock
 
 from unioq import ServiceProviderBuilder
 
 
-class IApiService(ABC):
-    @abstractmethod
-    def do_its_thing(self) -> str: ...
-
-
-class ApiService(IApiService):
+class ApiService:
     def do_its_thing(self) -> str:
         return "response from api"
 
@@ -16,11 +11,17 @@ class ApiService(IApiService):
 def test_factory():
     service_provider_builder = ServiceProviderBuilder()
 
-    def some_factory() -> ApiService:
-        return ApiService()
+    mock = Mock(return_value=ApiService())
 
-    service_provider_builder.add_transient(IApiService, some_factory)
+    def some_factory() -> ApiService:
+        return mock()
+
+    service_provider_builder.add_transient(ApiService, some_factory)
 
     service_provider = service_provider_builder.build()
 
-    service_provider.resolve(IApiService)
+    resolved_service = service_provider.resolve(ApiService)
+
+    assert isinstance(resolved_service, ApiService)
+
+    mock.assert_called_once()

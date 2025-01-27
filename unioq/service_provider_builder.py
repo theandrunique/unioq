@@ -14,13 +14,21 @@ class ServiceProviderBuilder:
     def __init__(self) -> None:
         self._service_registrations: dict[Type[Any], ServiceRegistration[Any]] = {}
 
-    def add_transient(self, interface: Type[T], service: Callable[..., T]) -> None:
+    def add_transient(self, interface: Type[T], service: Callable[..., T] | None = None) -> None:
         return self.add_service(interface, service, ServiceScope.transient)
 
-    def add_singleton(self, interface: Type[T], service: Callable[..., T]) -> None:
+    def add_singleton(self, interface: Type[T], service: Callable[..., T] | None = None) -> None:
         return self.add_service(interface, service, ServiceScope.singleton)
 
-    def add_service(self, interface: Type[T], service: Callable[..., T], scope: ServiceScope) -> None:
+    def add_service(
+        self,
+        interface: Type[T],
+        service: Callable[..., T] | None = None,
+        scope: ServiceScope = ServiceScope.transient,
+    ) -> None:
+        if service is None:
+            service = interface
+
         if interface is None or not inspect.isclass(interface):
             raise TypeError(f"Expected 'interface' to be a class type, but got {type(interface).__name__}")
 
@@ -30,7 +38,10 @@ class ServiceProviderBuilder:
         if not isinstance(scope, ServiceScope):
             raise TypeError(f"Expected 'scope' to be ServiceScope, but got {type(scope).__name__}")
 
-        check_service_return_type(interface, service)
+        try:
+            check_service_return_type(interface, service)
+        except TypeError as e:
+            raise e
 
         if registred_service := self._service_registrations.get(interface):
             raise ServiceAlreadyRegistred(registred_service.name, registred_service.service)
@@ -51,9 +62,9 @@ class ServiceProviderBuilder:
         )
 
         for service in self._service_registrations.values():
-            for service_dependencies in service.args:
-                if service_dependencies not in self._service_registrations:
-                    missing_dependencies.append(service_dependencies)
+            for service_dependency in service.args:
+                if service_dependency not in self._service_registrations:
+                    missing_dependencies.append(service_dependency)
 
             if missing_dependencies:
                 raise MissingDependencies(service.name, missing_dependencies)
