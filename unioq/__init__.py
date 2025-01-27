@@ -1,9 +1,9 @@
 __all__ = [
     "ServiceProvider",
-    "ServiceProviderBuilder",
+    "ServiceCollection",
     "ServiceScope",
 ]
 
 from .models import ServiceScope
+from .service_collection import ServiceCollection
 from .service_provider import ServiceProvider
-from .service_provider_builder import ServiceProviderBuilder

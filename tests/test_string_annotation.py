@@ -1,4 +1,4 @@
-from unioq import ServiceProviderBuilder
+from unioq import ServiceCollection
 
 
 class HttpClient:
@@ -15,10 +15,10 @@ class ApiService:
 
 
 def test_string_annotations():
-    service_provider_builder = ServiceProviderBuilder()
+    service_collection = ServiceCollection()
 
-    service_provider_builder.add_transient(HttpClient)
-    service_provider_builder.add_transient(ApiService)
+    service_collection.add_transient(HttpClient)
+    service_collection.add_transient(ApiService)
 
-    service_provider = service_provider_builder.build()
+    service_provider = service_collection.build_service_provider()
     service_provider.resolve(ApiService)

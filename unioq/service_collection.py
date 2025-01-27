@@ -10,7 +10,7 @@ from .service_provider import ServiceProvider
 T = TypeVar("T")
 
 
-class ServiceProviderBuilder:
+class ServiceCollection:
     def __init__(self) -> None:
         self._service_registrations: dict[Type[Any], ServiceRegistration[Any]] = {}
 
@@ -54,7 +54,7 @@ class ServiceProviderBuilder:
 
         self._service_registrations[interface] = registration
 
-    def build(self) -> ServiceProvider:
+    def build_service_provider(self) -> ServiceProvider:
         missing_dependencies = []
         service_provider = ServiceProvider(self._service_registrations)
         self._service_registrations[ServiceProvider] = ServiceRegistration(

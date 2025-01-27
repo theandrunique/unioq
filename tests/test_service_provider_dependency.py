@@ -1,4 +1,4 @@
-from unioq import ServiceProviderBuilder
+from unioq import ServiceCollection
 from unioq.service_provider import ServiceProvider
 
 
@@ -14,12 +14,12 @@ class ApiService:
 
 
 def test_service_provider_factory():
-    service_provider_builder = ServiceProviderBuilder()
+    service_collection = ServiceCollection()
 
-    service_provider_builder.add_transient(SomeExternalService)
+    service_collection.add_transient(SomeExternalService)
 
-    service_provider_builder.add_transient(ApiService)
+    service_collection.add_transient(ApiService)
 
-    service_provider = service_provider_builder.build()
+    service_provider = service_collection.build_service_provider()
 
     service_provider.resolve(ApiService)

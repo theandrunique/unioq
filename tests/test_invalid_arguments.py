@@ -1,17 +1,17 @@
 import pytest
 
-from unioq import ServiceProviderBuilder
+from unioq import ServiceCollection
 
 
 def test_arguments_with_none():
-    service_provider_builder = ServiceProviderBuilder()
+    service_collection = ServiceCollection()
 
     with pytest.raises(TypeError):
-        service_provider_builder.add_transient(None, None)
+        service_collection.add_transient(None, None)
 
 
 def test_arguments_with_some():
-    service_provider_builder = ServiceProviderBuilder()
+    service_collection = ServiceCollection()
 
     with pytest.raises(TypeError):
-        service_provider_builder.add_transient(1, "sdf")
+        service_collection.add_transient(1, "sdf")

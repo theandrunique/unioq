@@ -1,6 +1,6 @@
 from unittest.mock import Mock
 
-from unioq import ServiceProviderBuilder
+from unioq import ServiceCollection
 
 
 class ApiService:
@@ -9,16 +9,16 @@ class ApiService:
 
 
 def test_factory():
-    service_provider_builder = ServiceProviderBuilder()
+    service_collection = ServiceCollection()
 
     mock = Mock(return_value=ApiService())
 
     def some_factory() -> ApiService:
         return mock()
 
-    service_provider_builder.add_transient(ApiService, some_factory)
+    service_collection.add_transient(ApiService, some_factory)
 
-    service_provider = service_provider_builder.build()
+    service_provider = service_collection.build_service_provider()
 
     resolved_service = service_provider.resolve(ApiService)
 
