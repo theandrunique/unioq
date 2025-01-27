@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "unioq"
 version = "0.1.0"
-description = ""
+description = "type-safe Dependency Injection lib for Python"
 authors = ["theandrunique <theandrunique@gmail.com>"]
 readme = "README.md"
 
