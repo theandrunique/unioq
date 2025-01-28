@@ -23,7 +23,7 @@ def get_dependencies_types(service: Callable[..., Any]) -> List[type]:
 
         dependency_cls = type_hints.get(name, param.annotation)
 
-        if dependency_cls is inspect._empty or dependency_cls is Any:
+        if dependency_cls is inspect.Signature.empty or dependency_cls is Any:
             raise ValueError(f"Parameter '{name}' in '{service}' is missing a specific type annotation.")
 
         dependencies.append(dependency_cls)
